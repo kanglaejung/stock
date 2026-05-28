@@ -1,0 +1,13 @@
+{
+  "name": "stock-tracker",
+  "version": "1.0.0",
+  "description": "주식 종목 정보 조회 웹페이지",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file .env server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
