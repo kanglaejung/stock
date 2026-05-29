@@ -8,11 +8,15 @@ const __dirname = path.dirname(__filename);
 import { fetchInvestorData } from './kis-api.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const YAHOO_BASE = 'https://query1.finance.yahoo.com';
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
+// Health check for Cloud Run
+app.get('/health', (req, res) => res.send('OK'));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 // 네이버 증권 검색 (한글 지원)
 async function searchNaver(query) {
