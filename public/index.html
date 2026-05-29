@@ -365,24 +365,24 @@
     .news-source-body .news-item { font-size: 12px; color: #444; padding: 4px 0; border-bottom: 1px solid #f5f5f5; line-height: 1.4; }
     .news-source-body .news-item:last-child { border-bottom: none; }
 
-    .news-topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 16px; margin-bottom: 20px; }
-    .news-topic-card { background: #fff; border-radius: 12px; border: 1px solid #edf0f5; padding: 16px 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.03); }
+    .news-topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .news-topic-card { background: #fff; border-radius: 12px; border: 1px solid #edf0f5; padding: 16px 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.03); overflow: hidden; }
     .news-topic-title { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .news-source-badge { font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 600; white-space: nowrap; }
     .news-source-badge.global { background: #fff0e0; color: #e67e22; }
     .news-source-badge.domestic { background: #e3f0ff; color: #4a90d9; }
     .news-source-badge.both { background: #e8f5e9; color: #27ae60; }
-    .news-sector-table { width: 100%; border-collapse: collapse; }
-    .news-sector-table td { padding: 8px 6px; font-size: 12px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+    .news-sector-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+    .news-sector-table td { padding: 8px 6px; font-size: 12px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; overflow-wrap: break-word; word-break: break-word; }
     .news-sector-table tr:last-child td { border-bottom: none; }
-    .news-sector-name { font-weight: 600; color: #555; white-space: nowrap; }
+    .news-sector-name { font-weight: 600; color: #555; white-space: nowrap; width: 15%; }
     .sentiment-badge { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; min-width: 36px; }
     .sentiment-up { background: #ffebee; color: #e31b23; }
     .sentiment-down { background: #e3f2fd; color: #1261c4; }
     .sentiment-neutral { background: #f5f5f5; color: #888; }
     .news-sector-reason { color: #666; line-height: 1.4; }
-    .news-stock-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-    .news-stock-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #f0f6ff; color: #4a90d9; font-weight: 500; border: 1px solid #e0ecfa; }
+    .news-stock-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+    .news-stock-tag { display: inline-block; font-size: 11px; padding: 2px 6px; border-radius: 10px; background: #f0f6ff; color: #4a90d9; font-weight: 500; border: 1px solid #e0ecfa; white-space: nowrap; }
     .news-empty { text-align: center; color: #bbb; padding: 60px 20px; font-size: 14px; }
     .news-refresh-btn { font-size: 13px; color: #666; cursor: pointer; padding: 6px 14px; border-radius: 6px; border: 1px solid #ddd; background: #fff; transition: all 0.12s; }
     .news-refresh-btn:hover { background: #f5f5f5; border-color: #bbb; }
@@ -1504,9 +1504,9 @@
         ).join('');
         return `<tr>
           <td class="news-sector-name">${sec.name}</td>
-          <td style="width:60px;"><span class="sentiment-badge ${sentClass}">${sentLabel}</span></td>
+          <td style="width:70px;"><span class="sentiment-badge ${sentClass}">${sentLabel}</span></td>
           <td class="news-sector-reason">${sec.reason || ''}</td>
-          <td style="width:200px;"><div class="news-stock-tags">${stockTags || '-'}</div></td>
+          <td style="width:auto;min-width:120px;"><div class="news-stock-tags">${stockTags || '-'}</div></td>
         </tr>`;
       }).join('');
 
