@@ -1349,6 +1349,15 @@
       const downCls = s.downDays >= 3 ? 'change-up' : '';
       const displayScore = s.finalScore != null ? s.finalScore : s.score;
       const encodedName = encodeURIComponent(s.name);
+      const volExpCls = s.volExpScore >= 7 ? 'change-up' : s.volExpScore >= 4 ? '' : '';
+      const maCls = s.maScore >= 10 ? 'change-up' : s.maScore >= 5 ? '' : '';
+      const mfiCls = s.mfi < 40 ? 'change-up' : s.mfi > 70 ? 'change-down' : '';
+      let newsHtml = '-';
+      if (s.newsCount > 0) {
+        const sentCls = s.newsSentiment > 0 ? 'change-up' : s.newsSentiment < 0 ? 'change-down' : '';
+        const sentSign = s.newsSentiment > 0 ? '+' : '';
+        newsHtml = `${s.newsCount}<span class="${sentCls}"> (${sentSign}${s.newsSentiment})</span>`;
+      }
       // 점수에 LLM 조정 반영 표시
 	      let scoreDisplay = '' + displayScore;
 	      let scoreTitle = '';
