@@ -1,4 +1,10 @@
 import https from 'https';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const TOKEN_CACHE_FILE = path.join(__dirname, '.kis-token-cache.json');
 
 // KIS API는 SSL 인증서 검증 우회 필요 (자체 CA 사용)
 const AGENT = new https.Agent({ rejectUnauthorized: false });
@@ -9,6 +15,27 @@ const BASE_URL = process.env.KIS_IS_REAL === 'true'
 let cachedToken = null;
 let tokenExpiresAt = 0;
 let tokenPromise = null;
+
+// 파일에서 캐시된 토큰 복원
+function loadTokenCache() {
+  try {
+    if (fs.existsSync(TOKEN_CACHE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(TOKEN_CACHE_FILE, 'utf-8'));
+      if (data.token && data.expiresAt > Date.now()) {
+        cachedToken = data.token;
+        tokenExpiresAt = data.expiresAt;
+        return true;
+      }
+    }
+  } catch (_) {}
+  return false;
+}
+
+function saveTokenCache(token, expiresAt) {
+  try {
+    fs.writeFileSync(TOKEN_CACHE_FILE, JSON.stringify({ token, expiresAt, savedAt: Date.now() }), 'utf-8');
+  } catch (_) {}
+}
 
 function parseSymbol(symbol) {
   const match = symbol.match(/^(\d{6})\.(KS|KQ)$/);
@@ -66,6 +93,7 @@ async function getToken() {
         if (!data.access_token) throw new Error(`KIS auth failed: ${data.message || data.code || JSON.stringify(data)}`);
         cachedToken = data.access_token;
         tokenExpiresAt = Date.now() + (data.expires_in || 86400) * 1000 - 120000;
+        saveTokenCache(cachedToken, tokenExpiresAt);
         tokenPromise = null;
         return cachedToken;
       }
@@ -131,9 +159,13 @@ export async function fetchInvestorData(symbol) {
   }
 }
 
-// 서버 시작 시 미리 토큰 발급 (백그라운드)
+// 서버 시작 시: 파일 캐시 우선, 없으면 새 발급
 if (isConfigured()) {
-  getToken().then(() => console.log('KIS token ready')).catch(() => {});
+  if (loadTokenCache()) {
+    console.log('KIS token loaded from cache');
+  } else {
+    getToken().then(() => console.log('KIS token ready')).catch(() => {});
+  }
 }
 
 function toYYYYMMDD(date) {
