@@ -372,10 +372,11 @@
     .news-source-badge.global { background: #fff0e0; color: #e67e22; }
     .news-source-badge.domestic { background: #e3f0ff; color: #4a90d9; }
     .news-source-badge.both { background: #e8f5e9; color: #27ae60; }
-    .news-sector-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+    .news-sector-table { width: 100%; table-layout: fixed; border-collapse: collapse; min-width: 0; }
     .news-sector-table td { padding: 8px 6px; font-size: 12px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; overflow-wrap: break-word; word-break: break-word; }
     .news-sector-table tr:last-child td { border-bottom: none; }
-    .news-sector-name { font-weight: 600; color: #555; white-space: nowrap; width: 15%; }
+    .news-sector-name { font-weight: 600; color: #555; white-space: nowrap; width: 13%; }
+    .news-stock-tags-cell { width: 25%; }
     .sentiment-badge { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; min-width: 36px; }
     .sentiment-up { background: #ffebee; color: #e31b23; }
     .sentiment-down { background: #e3f2fd; color: #1261c4; }
@@ -1506,7 +1507,7 @@
           <td class="news-sector-name">${sec.name}</td>
           <td style="width:70px;"><span class="sentiment-badge ${sentClass}">${sentLabel}</span></td>
           <td class="news-sector-reason">${sec.reason || ''}</td>
-          <td style="width:auto;min-width:120px;"><div class="news-stock-tags">${stockTags || '-'}</div></td>
+          <td class="news-stock-tags-cell"><div class="news-stock-tags">${stockTags || '-'}</div></td>
         </tr>`;
       }).join('');
 

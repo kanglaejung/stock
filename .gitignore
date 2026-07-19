@@ -1,3 +1,5 @@
 .env
 node_modules/
 .kis-token-cache.json
+server_pid.txt
+server_test.log
